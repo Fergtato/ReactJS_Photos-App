@@ -37,7 +37,11 @@ class Home extends React.Component {
         axios.get('https://api.unsplash.com/photos/?per_page=30&page=' + this.state.page + '&order_by=' + this.state.sort + '&client_id=5d1254eb8bbd63208e3d5b7d760896bd504ffc7aedffe2c40f7e2139edf841df')
             .then(response => {
                 {/*Append json response data to existing photos array*/}
-                this.setState({photos: [...this.state.photos, ...response.data]});
+                this.setState({
+                    photos: [...this.state.photos, ...response.data]
+                });
+                this.setState({ loading: false });
+                console.log(this.state.loading);
             })
             .catch(err => {
                 console.log(err);
@@ -46,8 +50,11 @@ class Home extends React.Component {
 
     loadMore() {
         this.setState(prevState => ({
-          page: prevState.page + 1
+          page: prevState.page + 1,
+          loading: true
         }));
+
+        console.log(this.state.loading);
 
         this.apiCall();
     }
@@ -83,9 +90,8 @@ class Home extends React.Component {
                 </div>
 
                 <div className="ui hidden divider"></div>
-                <div class="ui active centered inline loader"></div>
+                <div className={"ui active centered inline loader " + (this.state.loading ? "" : "hide")}></div>
                 <div className="ui hidden divider"></div>
-
 
                 <BottomScrollListener onBottom={this.loadMore} />
 
