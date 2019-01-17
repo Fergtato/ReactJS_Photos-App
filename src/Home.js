@@ -3,6 +3,7 @@ import React from 'react';
 import FeedItem from './components/FeedItem'
 import axios from "axios";
 import { Header, Icon } from 'semantic-ui-react';
+import BottomScrollListener from 'react-bottom-scroll-listener';
 
 class Home extends React.Component {
     constructor(props) {
@@ -16,6 +17,7 @@ class Home extends React.Component {
         };
 
         this.handleClick = this.handleClick.bind(this);
+        this.loadMore = this.loadMore.bind(this);
     }
 
     componentDidMount() {
@@ -32,19 +34,23 @@ class Home extends React.Component {
     }
 
     apiCall() {
-        axios.get('https://api.unsplash.com/photos/?per_page=50&page=' + this.state.page + '&order_by=' + this.state.sort + '&client_id=5d1254eb8bbd63208e3d5b7d760896bd504ffc7aedffe2c40f7e2139edf841df')
+        axios.get('https://api.unsplash.com/photos/?per_page=30&page=' + this.state.page + '&order_by=' + this.state.sort + '&client_id=5d1254eb8bbd63208e3d5b7d760896bd504ffc7aedffe2c40f7e2139edf841df')
             .then(response => {
-                this.setState({photos: response.data});
+                {/*Append json response data to existing photos array*/}
+                this.setState({photos: [...this.state.photos, ...response.data]});
             })
             .catch(err => {
                 console.log(err);
             });
     }
 
-    handleScroll = (e) => {
-        const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
-        if (bottom) { console.log("LOAD"); }
-      }
+    loadMore() {
+        this.setState(prevState => ({
+          page: prevState.page + 1
+        }));
+
+        this.apiCall();
+    }
 
     render() {
         const feedItems = this.state.photos.map(p => <FeedItem key={p.id} id={p.id} urls={p.urls} user={p.user} likes={p.likes}/>);
@@ -75,6 +81,13 @@ class Home extends React.Component {
                 <div className="ui three column doubling stackable masonry grid">
                     {feedItems}
                 </div>
+
+                <div className="ui hidden divider"></div>
+                <div class="ui active centered inline loader"></div>
+                <div className="ui hidden divider"></div>
+
+
+                <BottomScrollListener onBottom={this.loadMore} />
 
             </div>
         )
