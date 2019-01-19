@@ -11,13 +11,35 @@ class Home extends React.Component {
 
         this.state = {
             photos:[],
+            photosOrdered:[],
             sort: 'latest',
             page: 1,
-            loading: false
+            loading: false,
+            columns: 3,
+            maxCards: 30
         };
 
         this.handleClick = this.handleClick.bind(this);
         this.loadMore = this.loadMore.bind(this);
+    }
+
+    apiCall() {
+        axios.get('https://api.unsplash.com/photos/?per_page=30&page=' + this.state.page + '&order_by=' + this.state.sort + '&client_id=5d1254eb8bbd63208e3d5b7d760896bd504ffc7aedffe2c40f7e2139edf841df')
+            .then(response => {
+                this.setState({
+                    photos: [...this.state.photos, ...response.data]
+                });
+
+                this.reorder(this.state.photos.slice(0,this.state.maxCards*this.state.page), this.state.columns);
+                this.setState({ loading: false });
+
+
+                console.log(this.state.photos);
+                console.log(this.state.photosOrdered);
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     componentDidMount() {
@@ -29,23 +51,9 @@ class Home extends React.Component {
         this.setState({
             sort: sortMode
         }, () => {
+            this.setState({photos: []});
             this.apiCall();
         });
-    }
-
-    apiCall() {
-        axios.get('https://api.unsplash.com/photos/?per_page=30&page=' + this.state.page + '&order_by=' + this.state.sort + '&client_id=5d1254eb8bbd63208e3d5b7d760896bd504ffc7aedffe2c40f7e2139edf841df')
-            .then(response => {
-                {/*Append json response data to existing photos array*/}
-                this.setState({
-                    photos: [...this.state.photos, ...response.data]
-                });
-                this.setState({ loading: false });
-                console.log(this.state.loading);
-            })
-            .catch(err => {
-                console.log(err);
-            });
     }
 
     loadMore() {
@@ -54,13 +62,27 @@ class Home extends React.Component {
           loading: true
         }));
 
-        console.log(this.state.loading);
-
         this.apiCall();
     }
 
+    reorder = (arr, columns) => {
+
+        const cols = columns;
+        const out = [];
+        let col = 0;
+        while(col < cols) {
+            for(let i = 0; i < arr.length; i += cols) {
+                let _val = arr[i + col];
+                if (_val !== undefined)
+                    out.push(_val);
+            }
+            col++;
+        }
+        this.setState({ photosOrdered: out });
+    }
+
     render() {
-        const feedItems = this.state.photos.map(p => <FeedItem key={p.id} id={p.id} urls={p.urls} user={p.user} likes={p.likes}/>);
+        const feedItems = this.state.photosOrdered.map(p => <FeedItem key={p.id} id={p.id} urls={p.urls} user={p.user} likes={p.likes}/>);
         return (
             <div className="ui container" onScroll={this.handleScroll}>
 

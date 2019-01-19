@@ -37,7 +37,7 @@ class Routing extends React.Component {
     }
 
     render(){
-        const collectionTags = this.state.collections.map(c => <Dropdown.Item key={c.id}><a href={'/collection/' + c.id}>{c.title}</a></Dropdown.Item>);
+        const collectionTags = this.state.collections.map(c => <Dropdown.Item href={'/collection/' + c.id} key={c.id}>{c.title}</Dropdown.Item>);
         return (
         <BrowserRouter>
             <div>

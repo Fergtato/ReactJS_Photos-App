@@ -37,6 +37,7 @@ class Search extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.match.params.query !== this.props.match.params.query) {
+            this.setState({photos: []});
             const query = nextProps.match.params.query;
             this.loadQuery(query);
         }
