@@ -1,7 +1,6 @@
 import React from 'react';
-
-import FeedItem from './components/FeedItem'
 import axios from "axios";
+import FeedItem from './components/FeedItem';
 import BottomScrollListener from 'react-bottom-scroll-listener';
 
 class Search extends React.Component {
@@ -54,7 +53,7 @@ class Search extends React.Component {
     }
 
     render() {
-        const feedItems = this.state.photos.map(p => <FeedItem key={p.id} id={p.id} urls={p.urls} user={p.user} likes={p.likes}/>);
+        const feedItems = this.state.photos.map(p => <FeedItem key={p.id} photo={p} id={p.id} urls={p.urls} user={p.user} likes={p.likes}/>);
         return (
             <div className="ui container">
 

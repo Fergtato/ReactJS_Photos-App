@@ -1,14 +1,17 @@
 import React from 'react';
-
-import FeedItem from './components/FeedItem'
 import axios from "axios";
+import FeedItem from './components/FeedItem';
 
 class Search extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            collection:[],
+            collection:{
+                cover_photo:{
+                    urls:{}
+                }
+            },
             collectionPhotos:[]
         };
     }
@@ -35,13 +38,21 @@ class Search extends React.Component {
     }
 
     render() {
-        const feedItems = this.state.collectionPhotos.map(p => <FeedItem key={p.id} id={p.id} urls={p.urls} user={p.user} likes={p.likes}/>);
+        const feedItems = this.state.collectionPhotos.map(p => <FeedItem key={p.id} photo={p} id={p.id} urls={p.urls} user={p.user} likes={p.likes}/>);
         return (
             <div className="ui container">
 
                 <div className="ui hidden divider"></div>
 
-                <p>{this.state.collection.title}</p>
+
+
+                <div className="hero-image" style={{background: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${this.state.collection.cover_photo.urls.regular}')`}}>
+                    <div className="hero-text">
+                        <h1>{this.state.collection.title}</h1>
+                        <p>{this.state.collection.description}</p>
+                    </div>
+                </div>
+
 
                 <div className="ui hidden divider"></div>
 

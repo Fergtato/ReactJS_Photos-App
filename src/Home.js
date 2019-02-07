@@ -1,8 +1,6 @@
 import React from 'react';
-
-import FeedItem from './components/FeedItem'
 import axios from "axios";
-import { Header, Icon } from 'semantic-ui-react';
+import FeedItem from './components/FeedItem';
 import BottomScrollListener from 'react-bottom-scroll-listener';
 
 class Home extends React.Component {
@@ -32,10 +30,6 @@ class Home extends React.Component {
 
                 this.reorder(this.state.photos.slice(0,this.state.maxCards*this.state.page), this.state.columns);
                 this.setState({ loading: false });
-
-
-                console.log(this.state.photos);
-                console.log(this.state.photosOrdered);
             })
             .catch(err => {
                 console.log(err);
@@ -82,7 +76,7 @@ class Home extends React.Component {
     }
 
     render() {
-        const feedItems = this.state.photosOrdered.map(p => <FeedItem key={p.id} id={p.id} urls={p.urls} user={p.user} likes={p.likes}/>);
+        const feedItems = this.state.photosOrdered.map(p => <FeedItem key={p.id} photo={p} id={p.id} urls={p.urls} user={p.user} likes={p.likes}/>);
         return (
             <div className="ui container" onScroll={this.handleScroll}>
 

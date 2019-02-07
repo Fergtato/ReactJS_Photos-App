@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from "axios";
+import {Link} from 'react-router-dom';
 
 class Photo extends React.Component {
     constructor(props) {
@@ -46,13 +47,13 @@ class Photo extends React.Component {
                         <div className="ui segments">
 
                             <div className="ui segment center aligned">
-                                <a href={'/user/' + this.state.photo.user.username} className="ui tiny circular centered image">
+                                <Link to={'/user/' + this.state.photo.user.username} className="ui tiny circular centered image">
                                     <img src={this.state.photo.user.profile_image.large} />
-                                </a>
+                                </Link>
                                 <h5 className="ui center aligned header">
-                                    <a href={'/user/' + this.state.photo.user.username}>
+                                    <Link to={'/user/' + this.state.photo.user.username}>
                                         {this.state.photo.user.name}
-                                    </a>
+                                    </Link>
                                     <div className="sub header">@{this.state.photo.user.username}</div>
                                 </h5>
                             </div>
