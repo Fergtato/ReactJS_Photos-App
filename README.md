@@ -1,3 +1,29 @@
+#React Photo App
+
+For this assignment we were tasked with creating a web app using React JS. We were instructed to find an API to provide data for the app and to manipulate this data. I chose the Unsplash photo API for my project. Unsplash is a database of modern royalty free photos. The API provides access to all the photos in the database, the users that post them, collections of photos as well as search results for a query. The API returns JSON data which can be used within React JS.
+
+To get this project running first clone the repository:
+```
+git clone https://github.com/Fergtato/ReactJS_Photos-App
+```
+
+Enter the folder:
+```
+cd photos-app
+```
+
+Install the dependencies:
+```
+npm install
+```
+
+Run the local server:
+```
+npm start
+```
+
+The project will be available at [http://localhost:3000](http://localhost:3000)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
